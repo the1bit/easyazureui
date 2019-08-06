@@ -2,7 +2,8 @@
 
 ## Versions
 
-* latest, 19.08.01: Very first release
+* latest, 19.08.02: Administration
+* 19.08.01: Very first release
 
 ## Background 
 
