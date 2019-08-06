@@ -3,7 +3,7 @@
 FROM python:3
 
 # Labels
-LABEL version="19.08.01" \
+LABEL version="19.08.02" \
     maintainer="the1bithu@gmail.com" \
     environment="azure" \
     web="Flask" \
