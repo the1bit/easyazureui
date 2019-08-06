@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h2>Flask based app which uses Azure Rest API</h2>
+    
+</div>
+
+<h2>Available subscriptions:</h2>
+<ul>
+    {% for subscription in apiResult %}
+    <li><h3>{{ subscription["displayName"] }} ({{ subscription["subscriptionId"] }}) with state: {{ subscription["state"] }}</h3></li>
+    {% endfor %}
+</ul>
+
+
+<hr />
+<h5>Your token expires on {{tokenExpiration}}</h5>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+<table border="1" cellpadding="10">
+    <tr align="center"><th>Name</th><th>Location</th><th>Size</th><th>Id</th><th>Provisioning State</th><th>OS Disk size (GB)</th></tr>
+    {% for vm in apiResult %}
+    <tr><td>{{ vm["name"] }}</td><td>{{ vm["location"] }}</td><td>{{ vm["properties"]["hardwareProfile"]["vmSize"] }}</td><td>{{ vm["properties"]["vmId"] }}</td><td>{{ vm["properties"]["provisioningState"] }}</td><td>{{ vm["properties"]["storageProfile"]["osDisk"]["diskSizeGB"] }}</td></tr>
+    {% endfor %}
+</table>
+
+<hr />
+<h5>Your token expires on {{tokenExpiration}}</h5>
+
+{% endblock %}
