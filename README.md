@@ -2,7 +2,8 @@
 
 ## Versions
 
-* latest, 19.08.02: Administration
+* latest, 19.08.03: Refresh token
+* 19.08.02: Administration
 * 19.08.01: Very first release
 
 ## Background 

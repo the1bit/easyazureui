@@ -24,16 +24,27 @@ TOKEN = candt[1]
 
 # EXPIRES_ON = bittime.datetime.strptime(TOKEN["expiresOn"], '%Y-%m-%d %H:%M:%S.%f')
 
-# def refresh_token():
-#    candt = bitazrest.get_context_and_token()
-#    CONTEXT = candt[0]
-#    TOKEN = candt[1]
+def refresh_token():
+    global TOKEN
+    global CONTEXT
+    now = datetime.now()
+    #print(TOKEN["expiresOn"]);
+    token_expiration_time = datetime.strptime(TOKEN["expiresOn"], '%Y-%m-%d %H:%M:%S.%f')
+    if now >= token_expiration_time:
+        newtoken = bitazrest.get_context_and_token()
+        TOKEN = newtoken[1]
+        CONTEXT = newtoken[0]
+        return True
+    else:
+        return False
 
 
 @app.route('/')
 @app.route('/home')
 def home():
+    refresh_token()    
     apiResult = bitazrest.get_subscriptions_data(TOKEN)
+
     return render_template(
         'index.html',
         title='Home Page',
@@ -44,6 +55,7 @@ def home():
 
 @app.route('/resourcegroups')
 def resourcegroups():
+    refresh_token()    
     apiResult = bitazrest.get_resourcegroups(TOKEN, os.environ['AZURE_DEFAULTSUBSCRIPTION'])
     return render_template(
         'resourcegroups.html',
@@ -57,6 +69,7 @@ def resourcegroups():
 
 @app.route('/vmlist')
 def vmlist():
+    refresh_token()    
     apiResult = bitazrest.get_vms_all(TOKEN, os.environ['AZURE_DEFAULTSUBSCRIPTION'])
     print(apiResult)
     return render_template(
@@ -67,3 +80,24 @@ def vmlist():
         year=datetime.now().year,
         message='You have the following Virtual Machines in this subscription:'
     )
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template(
+        'error.html',
+        title='Error: 500',
+        message='Something went wrong. HTTP 500 error.',
+        error_message=error
+    )
+    #return "500 error"
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template(
+        'error.html',
+        title='Error: 404',
+        message='Page not found. HTTP 404 error.',
+        error_message=error
+    )
+    #return "404 error",404
